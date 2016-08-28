@@ -14,6 +14,7 @@ const path = require('path')
 const webpack = require('webpack')
 const AssetsPlugin = require('assets-webpack-plugin')
 const pkg = require('./package.json')
+var DashboardPlugin = require('webpack-dashboard/plugin')
 
 const isDebug = global.DEBUG === false ? false : !process.argv.includes('--release')
 const isVerbose = process.argv.includes('--verbose') || process.argv.includes('-v')
@@ -81,7 +82,8 @@ const config = {
       path: path.resolve(__dirname, './public/dist'),
       filename: 'assets.json',
       prettyPrint: true
-    })
+    }),
+    new DashboardPlugin()
   ],
 
   // Options affecting the normal modules
