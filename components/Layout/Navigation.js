@@ -8,28 +8,28 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
-import Link from '../Link';
+import React from 'react'
+import Link from '../Link'
 
 class Navigation extends React.Component {
 
-  componentDidMount() {
-    window.componentHandler.upgradeElement(this.root);
+  componentDidMount () {
+    window.componentHandler.upgradeElement(this.root)
   }
 
-  componentWillUnmount() {
-    window.componentHandler.downgradeElements(this.root);
+  componentWillUnmount () {
+    window.componentHandler.downgradeElements(this.root)
   }
 
-  render() {
+  render () {
     return (
       <nav className="mdl-navigation" ref={node => (this.root = node)}>
         <Link className="mdl-navigation__link" to="/">Home</Link>
         <Link className="mdl-navigation__link" to="/about">About</Link>
       </nav>
-    );
+    )
   }
 
 }
 
-export default Navigation;
+export default Navigation

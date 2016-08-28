@@ -8,10 +8,10 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
-import Link from '../Link';
+import React from 'react'
+import Link from '../Link'
 
-function Footer() {
+function Footer () {
   return (
     <footer className="mdl-mini-footer">
       <div className="mdl-mini-footer__left-section">
@@ -60,7 +60,7 @@ function Footer() {
         </ul>
       </div>
     </footer>
-  );
+  )
 }
 
-export default Footer;
+export default Footer

@@ -8,9 +8,9 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React, { PropTypes } from 'react';
-import cx from 'classnames';
-import Link from '../Link';
+import React, { PropTypes } from 'react'
+import cx from 'classnames'
+import Link from '../Link'
 
 class Button extends React.Component {
 
@@ -18,7 +18,7 @@ class Button extends React.Component {
     component: PropTypes.oneOf([
       PropTypes.string,
       PropTypes.element,
-      PropTypes.func,
+      PropTypes.func
     ]),
     type: PropTypes.oneOf(['raised', 'fab', 'mini-fab', 'icon']),
     to: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
@@ -28,20 +28,20 @@ class Button extends React.Component {
     primary: PropTypes.bool,
     accent: PropTypes.bool,
     ripple: PropTypes.bool,
-    children: PropTypes.node,
+    children: PropTypes.node
   };
 
-  componentDidMount() {
-    window.componentHandler.upgradeElement(this.root);
+  componentDidMount () {
+    window.componentHandler.upgradeElement(this.root)
   }
 
-  componentWillUnmount() {
-    window.componentHandler.downgradeElements(this.root);
+  componentWillUnmount () {
+    window.componentHandler.downgradeElements(this.root)
   }
 
-  render() {
+  render () {
     const { component, type, className, colored, to, href,
-      primary, accent, ripple, children, ...other } = this.props;
+      primary, accent, ripple, children, ...other } = this.props
     return React.createElement(
       component || (to ? Link : (href ? 'a' : 'button')), // eslint-disable-line no-nested-ternary
       {
@@ -53,18 +53,18 @@ class Button extends React.Component {
             'mdl-button--colored': colored,
             'mdl-button--primary': primary,
             'mdl-button--accent': accent,
-            'mdl-js-ripple-effect': ripple,
+            'mdl-js-ripple-effect': ripple
           },
           className
         ),
         to,
         href,
-        ...other,
+        ...other
       },
       children
-    );
+    )
   }
 
 }
 
-export default Button;
+export default Button

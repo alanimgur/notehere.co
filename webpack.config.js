@@ -10,18 +10,18 @@
 
 /* eslint-disable global-require */
 
-const path = require('path');
-const webpack = require('webpack');
-const AssetsPlugin = require('assets-webpack-plugin');
-const pkg = require('./package.json');
+const path = require('path')
+const webpack = require('webpack')
+const AssetsPlugin = require('assets-webpack-plugin')
+const pkg = require('./package.json')
 
-const isDebug = global.DEBUG === false ? false : !process.argv.includes('--release');
-const isVerbose = process.argv.includes('--verbose') || process.argv.includes('-v');
-const useHMR = !!global.HMR; // Hot Module Replacement (HMR)
+const isDebug = global.DEBUG === false ? false : !process.argv.includes('--release')
+const isVerbose = process.argv.includes('--verbose') || process.argv.includes('-v')
+const useHMR = !!global.HMR // Hot Module Replacement (HMR)
 const babelConfig = Object.assign({}, pkg.babel, {
   babelrc: false,
-  cacheDirectory: useHMR,
-});
+  cacheDirectory: useHMR
+})
 
 // Webpack configuration (main.js => public/dist/main.{hash}.js)
 // http://webpack.github.io/docs/configuration.html
@@ -36,7 +36,7 @@ const config = {
     '!!style!css!react-mdl/extra/material.min.css',
     'react-mdl/extra/material.min.js',
     /* The main entry point of your JavaScript application */
-    './main.js',
+    './main.js'
   ],
 
   // Options affecting the output of the compilation
@@ -45,7 +45,7 @@ const config = {
     publicPath: '/dist/',
     filename: isDebug ? '[name].js?[hash]' : '[name].[hash].js',
     chunkFilename: isDebug ? '[id].js?[chunkhash]' : '[id].[chunkhash].js',
-    sourcePrefix: '  ',
+    sourcePrefix: '  '
   },
 
   // Switch loaders to debug or release mode
@@ -65,7 +65,7 @@ const config = {
     chunks: isVerbose,
     chunkModules: isVerbose,
     cached: isVerbose,
-    cachedAssets: isVerbose,
+    cachedAssets: isVerbose
   },
 
   // The list of plugins for Webpack compiler
@@ -73,15 +73,15 @@ const config = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': isDebug ? '"development"' : '"production"',
-      __DEV__: isDebug,
+      __DEV__: isDebug
     }),
     // Emit a JSON file with assets paths
     // https://github.com/sporto/assets-webpack-plugin#options
     new AssetsPlugin({
       path: path.resolve(__dirname, './public/dist'),
       filename: 'assets.json',
-      prettyPrint: true,
-    }),
+      prettyPrint: true
+    })
   ],
 
   // Options affecting the normal modules
@@ -94,9 +94,9 @@ const config = {
           path.resolve(__dirname, './components'),
           path.resolve(__dirname, './core'),
           path.resolve(__dirname, './pages'),
-          path.resolve(__dirname, './main.js'),
+          path.resolve(__dirname, './main.js')
         ],
-        loader: `babel-loader?${JSON.stringify(babelConfig)}`,
+        loader: `babel-loader?${JSON.stringify(babelConfig)}`
       },
       {
         test: /\.css/,
@@ -108,46 +108,46 @@ const config = {
             modules: true,
             localIdentName: isDebug ? '[name]_[local]_[hash:base64:3]' : '[hash:base64:4]',
             // CSS Nano http://cssnano.co/options/
-            minimize: !isDebug,
+            minimize: !isDebug
           })}`,
-          'postcss-loader',
-        ],
+          'postcss-loader'
+        ]
       },
       {
         test: /\.json$/,
         exclude: [
-          path.resolve(__dirname, './routes.json'),
+          path.resolve(__dirname, './routes.json')
         ],
-        loader: 'json-loader',
+        loader: 'json-loader'
       },
       {
         test: /\.json$/,
         include: [
-          path.resolve(__dirname, './routes.json'),
+          path.resolve(__dirname, './routes.json')
         ],
         loaders: [
           `babel-loader?${JSON.stringify(babelConfig)}`,
-          path.resolve(__dirname, './utils/routes-loader.js'),
-        ],
+          path.resolve(__dirname, './utils/routes-loader.js')
+        ]
       },
       {
         test: /\.md$/,
-        loader: path.resolve(__dirname, './utils/markdown-loader.js'),
+        loader: path.resolve(__dirname, './utils/markdown-loader.js')
       },
       {
         test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
-        loader: 'url-loader?limit=10000',
+        loader: 'url-loader?limit=10000'
       },
       {
         test: /\.(eot|ttf|wav|mp3)$/,
-        loader: 'file-loader',
-      },
-    ],
+        loader: 'file-loader'
+      }
+    ]
   },
 
   // The list of plugins for PostCSS
   // https://github.com/postcss/postcss
-  postcss(bundler) {
+  postcss (bundler) {
     return [
       // Transfer @import rule by inlining content, e.g. @import 'normalize.css'
       // https://github.com/postcss/postcss-import
@@ -190,25 +190,25 @@ const config = {
       require('postcss-flexbugs-fixes')(),
       // Add vendor prefixes to CSS rules using values from caniuse.com
       // https://github.com/postcss/autoprefixer
-      require('autoprefixer')(),
-    ];
-  },
+      require('autoprefixer')()
+    ]
+  }
 
-};
+}
 
 // Optimize the bundle in release (production) mode
 if (!isDebug) {
-  config.plugins.push(new webpack.optimize.DedupePlugin());
-  config.plugins.push(new webpack.optimize.UglifyJsPlugin({ compress: { warnings: isVerbose } }));
-  config.plugins.push(new webpack.optimize.AggressiveMergingPlugin());
+  config.plugins.push(new webpack.optimize.DedupePlugin())
+  config.plugins.push(new webpack.optimize.UglifyJsPlugin({ compress: { warnings: isVerbose } }))
+  config.plugins.push(new webpack.optimize.AggressiveMergingPlugin())
 }
 
 // Hot Module Replacement (HMR) + React Hot Reload
 if (isDebug && useHMR) {
-  babelConfig.plugins.unshift('react-hot-loader/babel');
-  config.entry.unshift('react-hot-loader/patch', 'webpack-hot-middleware/client');
-  config.plugins.push(new webpack.HotModuleReplacementPlugin());
-  config.plugins.push(new webpack.NoErrorsPlugin());
+  babelConfig.plugins.unshift('react-hot-loader/babel')
+  config.entry.unshift('react-hot-loader/patch', 'webpack-hot-middleware/client')
+  config.plugins.push(new webpack.HotModuleReplacementPlugin())
+  config.plugins.push(new webpack.NoErrorsPlugin())
 }
 
-module.exports = config;
+module.exports = config

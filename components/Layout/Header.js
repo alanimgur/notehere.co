@@ -8,22 +8,22 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
-import Navigation from './Navigation';
-import Link from '../Link';
-import s from './Header.css';
+import React from 'react'
+import Navigation from './Navigation'
+import Link from '../Link'
+import s from './Header.css'
 
 class Header extends React.Component {
 
-  componentDidMount() {
-    window.componentHandler.upgradeElement(this.root);
+  componentDidMount () {
+    window.componentHandler.upgradeElement(this.root)
   }
 
-  componentWillUnmount() {
-    window.componentHandler.downgradeElements(this.root);
+  componentWillUnmount () {
+    window.componentHandler.downgradeElements(this.root)
   }
 
-  render() {
+  render () {
     return (
       <header className={`mdl-layout__header ${s.header}`} ref={node => (this.root = node)}>
         <div className={`mdl-layout__header-row ${s.row}`}>
@@ -34,9 +34,9 @@ class Header extends React.Component {
           <Navigation />
         </div>
       </header>
-    );
+    )
   }
 
 }
 
-export default Header;
+export default Header
