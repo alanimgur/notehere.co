@@ -1,13 +1,3 @@
-/**
- * React Static Boilerplate
- * https://github.com/kriasoft/react-static-boilerplate
- *
- * Copyright © 2015-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 /* eslint-disable global-require */
 
 const path = require('path')
@@ -33,11 +23,10 @@ const config = {
 
   // The entry point for the bundle
   entry: [
-    /* Material Design Lite (https://getmdl.io) */
-    '!!style!css!react-mdl/extra/material.min.css',
-    'react-mdl/extra/material.min.js',
+    /* Normalize all css styles */
+    '!!style!css!normalize.css/normalize.css',
     /* The main entry point of your JavaScript application */
-    './main.js'
+    './src/main.js'
   ],
 
   // Options affecting the output of the compilation
@@ -92,11 +81,7 @@ const config = {
       {
         test: /\.jsx?$/,
         include: [
-          path.resolve(__dirname, './actions'),
-          path.resolve(__dirname, './components'),
-          path.resolve(__dirname, './core'),
-          path.resolve(__dirname, './pages'),
-          path.resolve(__dirname, './main.js')
+          path.resolve(__dirname, './src')
         ],
         loader: `babel-loader?${JSON.stringify(babelConfig)}`
       },
@@ -122,7 +107,7 @@ const config = {
           `css-loader?${JSON.stringify({
             sourceMap: isDebug,
             // CSS Modules https://github.com/css-modules/css-modules
-            modules: true,
+            modules: false,
             localIdentName: isDebug ? '[name]_[local]_[hash:base64:3]' : '[hash:base64:4]',
             // CSS Nano http://cssnano.co/options/
             minimize: !isDebug
@@ -223,14 +208,6 @@ if (!isDebug) {
   config.plugins.push(new webpack.optimize.DedupePlugin())
   config.plugins.push(new webpack.optimize.UglifyJsPlugin({ compress: { warnings: isVerbose } }))
   config.plugins.push(new webpack.optimize.AggressiveMergingPlugin())
-}
-
-// Hot Module Replacement (HMR) + React Hot Reload
-if (isDebug && useHMR) {
-  babelConfig.plugins.unshift('react-hot-loader/babel')
-  config.entry.unshift('react-hot-loader/patch', 'webpack-hot-middleware/client')
-  config.plugins.push(new webpack.HotModuleReplacementPlugin())
-  config.plugins.push(new webpack.NoErrorsPlugin())
 }
 
 module.exports = config
