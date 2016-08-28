@@ -8,18 +8,36 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React, { PropTypes } from 'react'
-import Layout from '../../components/Layout'
-import s from './styles.css'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Editor from 'react-medium-editor'
+import s from './styles.scss'
+
+require('medium-editor/dist/css/medium-editor.css')
+require('medium-editor/dist/css/themes/default.css')
 
 class HomePage extends React.Component {
-  static propTypes = {
-    articles: PropTypes.array.isRequired
-  };
+  constructor () {
+    super()
+    this.state = { text: '' }
+  }
+
+  componentWillMount () {
+    this.setState({text: window.localStorage.getItem('text')})
+  }
+
+  componentDidMount () {
+    var editor = ReactDOM.findDOMNode(this)
+    editor.setAttribute('data-placeholder', 'Take note...')
+  }
+
+  handleChange (text) {
+    window.localStorage.setItem('text', text)
+  }
 
   render () {
     return (
-      <Layout className={s.content}/>
+      <Editor className={s.content} onChange={this.handleChange} text={this.state.text} />
     )
   }
 }
