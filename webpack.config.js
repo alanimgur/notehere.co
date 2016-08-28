@@ -114,6 +114,22 @@ const config = {
         ]
       },
       {
+        test: /\.scss/,
+        loaders: [
+          'style-loader',
+          `css-loader?${JSON.stringify({
+            sourceMap: isDebug,
+            // CSS Modules https://github.com/css-modules/css-modules
+            modules: true,
+            localIdentName: isDebug ? '[name]_[local]_[hash:base64:3]' : '[hash:base64:4]',
+            // CSS Nano http://cssnano.co/options/
+            minimize: !isDebug
+          })}`,
+          'postcss-loader?pack=sass',
+          'sass-loader'
+        ]
+      },
+      {
         test: /\.json$/,
         exclude: [
           path.resolve(__dirname, './routes.json')
@@ -155,13 +171,13 @@ const config = {
       // W3C variables, e.g. :root { --color: red; } div { background: var(--color); }
       // https://github.com/postcss/postcss-custom-properties
       require('postcss-custom-properties')(),
-      // W3C CSS Custom Media Queries, e.g. @custom-media --small-viewport (max-width: 30em);
+      // W3C CSS Custom Media Queries, e.g. @custom-media --small-viewport (max-width: 30em)
       // https://github.com/postcss/postcss-custom-media
       require('postcss-custom-media')(),
       // CSS4 Media Queries, e.g. @media screen and (width >= 500px) and (width <= 1200px) { }
       // https://github.com/postcss/postcss-media-minmax
       require('postcss-media-minmax')(),
-      // W3C CSS Custom Selectors, e.g. @custom-selector :--heading h1, h2, h3, h4, h5, h6;
+      // W3C CSS Custom Selectors, e.g. @custom-selector :--heading h1, h2, h3, h4, h5, h6
       // https://github.com/postcss/postcss-custom-selectors
       require('postcss-custom-selectors')(),
       // W3C calc() function, e.g. div { height: calc(100px - 2em); }
